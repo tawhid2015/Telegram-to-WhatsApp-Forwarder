@@ -1,0 +1,5 @@
+node_modules/
+auth_info/
+*.log
+telegram_session.txt
+.DS_Store
