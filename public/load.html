@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><title>Load Test</title></head>
+<body>
+<h1>Loading...</h1>
+<div id="result"></div>
+<script>
+async function load() {
+    try {
+        const res = await fetch('/api/config?password=***
+        const data = await res.json();
+        document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+    } catch(e) {
+        document.getElementById('result').innerHTML = 'Error: ' + e.message;
+    }
+}
+load();
+</script>
+</body>
+</html>

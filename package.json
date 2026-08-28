@@ -1,0 +1,37 @@
+{
+  "name": "telegram-to-whatsapp-forwarder",
+  "version": "2.0.0",
+  "description": "Forward filtered Telegram gold signals to WhatsApp Community",
+  "main": "telegram-forwarder.js",
+  "scripts": {
+    "start": "node telegram-forwarder.js",
+    "dev": "node telegram-forwarder.js",
+    "keepalive": "node keepalive.js",
+    "daemon": "bash run.sh start",
+    "stop": "bash run.sh stop",
+    "status": "bash run.sh status",
+    "logs": "bash run.sh logs"
+  },
+  "keywords": [
+    "telegram",
+    "whatsapp",
+    "gold",
+    "signals",
+    "trading",
+    "forwarder"
+  ],
+  "author": "Tawhid",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@whiskeysockets/baileys": "^7.0.0-rc14",
+    "big-integer": "^1.6.52",
+    "express": "^5.2.1",
+    "input": "^1.0.1",
+    "node-telegram-bot-api": "^0.66.0",
+    "pino": "^10.3.1",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "telegram": "^2.22.2"
+  }
+}

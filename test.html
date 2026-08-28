@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+<h1>Test</h1>
+<div id="result">Loading...</div>
+<script>
+document.getElementById('result').textContent = 'Script loaded';
+fetch('/api/config?password=***
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('result').textContent = 'API ID: ' + (data.apiId || 'not found');
+  })
+  .catch(e => {
+    document.getElementById('result').textContent = 'Error: ' + e.message;
+  });
+</script>
+</body>
+</html>

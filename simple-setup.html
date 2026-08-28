@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Gold Signal Forwarder - Setup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+            background: #36393f; 
+            color: #dcddde; 
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        
+        /* Discord Sidebar */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: #2f3136;
+            padding: 20px 0;
+            border-right: 1px solid #202225;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #202225;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h2 {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .sidebar-header p {
+            color: #72767d;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .nav-item {
+            padding: 10px 20px;
+            color: #b9bbbe;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .nav-item:hover {
+            background: #34373c;
+            color: #fff;
+        }
+        
+        .nav-item.active {
+            background: #393c43;
+            color: #fff;
+        }
+        
+        .nav-item .icon {
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            max-width: 800px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #40444b;
+        }
+        
+        .header h1 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+        
+        /* Discord Cards */
+        .card {
+            background: #2f3136;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 20px 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background: #5865f2;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .step-number.done {
+            background: #3ba55d;
+        }
+        
+        .card-header h2 {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .help-text {
+            color: #72767d;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        
+        /* Discord Inputs */
+        input, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: #40444b;
+            border: 1px solid #40444b;
+            border-radius: 4px;
+            color: #dcddde;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            margin-bottom: 10px;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #5865f2;
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: #72767d;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        /* Discord Buttons */
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: #5865f2;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #4752c4;
+        }
+        
+        .btn-success {
+            background: #3ba55d;
+            color: #fff;
+        }
+        
+        .btn-success:hover {
+            background: #2d7d46;
+        }
+        
+        .btn-secondary {
+            background: #4f545c;
+            color: #fff;
+        }
+        
+        .btn-secondary:hover {
+            background: #686d73;
+        }
+        
+        .btn-danger {
+            background: #ed4245;
+            color: #fff;
+        }
+        
+        .btn-danger:hover {
+            background: #c03537;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        /* Status Messages */
+        .status {
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        
+        .status-success {
+            background: rgba(59, 165, 93, 0.1);
+            color: #3ba55d;
+            border: 1px solid rgba(59, 165, 93, 0.2);
+        }
+        
+        .status-error {
+            background: rgba(237, 66, 69, 0.1);
+            color: #ed4245;
+            border: 1px solid rgba(237, 66, 69, 0.2);
+        }
+        
+        .status-info {
+            background: rgba(88, 101, 242, 0.1);
+            color: #5865f2;
+            border: 1px solid rgba(88, 101, 242, 0.2);
+        }
+        
+        .saved-info {
+            color: #3ba55d;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .saved-info.visible {
+            display: flex;
+        }
+        
+        .saved-info::before {
+            content: "✓";
+            font-weight: bold;
+        }
+        
+        /* Connection Status */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #36393f;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ed4245;
+        }
+        
+        .status-dot.connected {
+            background: #3ba55d;
+        }
+        
+        .status-text {
+            color: #b9bbbe;
+            font-size: 14px;
+        }
+        
+        .status-text.connected {
+            color: #3ba55d;
+        }
+        
+        /* Group Selection */
+        .group-list {
+            margin-top: 15px;
+        }
+        
+        .group-item {
+            padding: 15px;
+            background: #36393f;
+            border-radius: 4px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        
+        .group-item:hover {
+            background: #40444b;
+        }
+        
+        .group-item.selected {
+            background: rgba(88, 101, 242, 0.1);
+            border-left-color: #5865f2;
+        }
+        
+        .group-name {
+            color: #fff;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .group-id {
+            color: #72767d;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        
+        /* Checkbox */
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .checkbox-wrapper input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+        
+        .checkbox-wrapper label {
+            color: #dcddde;
+            font-size: 14px;
+        }
+        
+        /* Logout Link */
+        .logout-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 15px 20px;
+            z-index: 100;
+        }
+        
+        .logout-bar a {
+            color: #b9bbbe;
+            text-decoration: none;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+        
+        .logout-bar a:hover {
+            color: #fff;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logout-bar">
+        <a href="/">🔒 Back to Dashboard</a>
+    </div>
+    
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>⚙️ Setup</h2>
+                <p>Configure your forwarder</p>
+            </div>
+            <div class="nav-item active">
+                <span class="icon">📡</span> Connection
+            </div>
+            <div class="nav-item">
+                <span class="icon">🔑</span> API Settings
+            </div>
+            <div class="nav-item">
+                <span class="icon">📋</span> Keywords
+            </div>
+            <div class="nav-item">
+                <span class="icon">🛡️</span> Filters
+            </div>
+            <div class="nav-item">
+                <span class="icon">📱</span> WhatsApp
+            </div>
+            <div class="nav-item">
+                <span class="icon">🎯</span> Targets
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>🚀 Gold Signal Forwarder</h1>
+                <p>Setup your Telegram to WhatsApp signal forwarder</p>
+            </div>
+            
+            <!-- Step 1: Telegram API -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step1_num">1</div>
+                    <h2>Telegram API Credentials</h2>
+                </div>
+                <div class="card-body">
+                    <p class="help-text">Get these from <a href="https://my.telegram.org/apps" target="_blank" style="color: #00aff4;">my.telegram.org/apps</a></p>
+                    <input type="text" id="api_id" placeholder="API ID (e.g., 26449295)">
+                    <input type="text" id="api_hash" placeholder="API Hash">
+                    <button class="btn btn-primary" onclick="saveApi()">Save API Credentials</button>
+                    <div id="api_status"></div>
+                    <div id="api_saved" class="saved-info"><span class="saved-text"></span></div>
+                </div>
+            </div>
+            
+            <!-- Step 2: Telegram Channel -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step2_num">2</div>
+                    <h2>Telegram Channel</h2>
+                </div>
+                <div class="card-body">
+                    <p class="help-text">Enter channel username (e.g., @goldsignals) or ID</p>
+                    <input type="text" id="channel" placeholder="@channelname or -1001234567890">
+                    <button class="btn btn-primary" onclick="saveChannel()">Save Channel</button>
+                    <div id="channel_status"></div>
+                    <div id="channel_saved" class="saved-info"><span class="saved-text"></span></div>
+                </div>
+            </div>
+            
+            <!-- Step 3: Keywords -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step3_num">3</div>
+                    <h2>Filter Keywords</h2>
+                </div>
+                <div class="card-body">
+                    <p class="help-text">One keyword per line. Only messages with these words will be forwarded.</p>
+                    <textarea id="keywords" rows="5" placeholder="Gold Sell Now&#10;Gold Buy Now&#10;XAUUSD Sell Now&#10;XAUUSD Buy Now"></textarea>
+                    <button class="btn btn-success" onclick="saveKeywords()">Save Keywords</button>
+                    <div id="keywords_status"></div>
+                    <div id="keywords_saved" class="saved-info"><span class="saved-text"></span></div>
+                </div>
+            </div>
+            
+            <!-- Step 3b: Sensitive Words -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step3b_num">3b</div>
+                    <h2> Sensitive Words Filter</h2>
+                </div>
+                <div class="card-body">
+                    <p class="help-text">These words will be removed from messages before forwarding to hide signal sources.</p>
+                    <textarea id="sensitive_words" rows="3" placeholder="Mike&#10;@mikegoldmaster&#10;#Mikesyndicate"></textarea>
+                    <button class="btn btn-success" onclick="saveSensitiveWords()">Save Sensitive Words</button>
+                    <div id="sensitive_status"></div>
+                    <div id="sensitive_saved" class="saved-info"><span class="saved-text"></span></div>
+                </div>
+            </div>
+            
+            <!-- Step 4: Telegram Login -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step4_num">4</div>
+                    <h2>Telegram Login</h2>
+                </div>
+                <div class="card-body">
+                    <input type="text" id="phone" placeholder="Phone number with country code (e.g., +880123456789)">
+                    <button class="btn btn-primary" onclick="sendCode()">Send Code</button>
+                    <div id="code_div" style="display:none; margin-top:15px;">
+                        <input type="text" id="code" placeholder="Enter code from Telegram">
+                        <button class="btn btn-primary" onclick="verifyCode()">Verify Code</button>
+                    </div>
+                    <div id="pass_div" style="display:none; margin-top:15px;">
+                        <input type="password" id="password" placeholder="2FA Password (if enabled)">
+                        <button class="btn btn-primary" onclick="verifyPassword()">Verify Password</button>
+                    </div>
+                    <div id="telegram_status"></div>
+                    <div id="telegram_saved" class="saved-info"><span class="saved-text"></span></div>
+                </div>
+            </div>
+            
+            <!-- Step 5: WhatsApp Login -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step5_num">5</div>
+                    <h2>WhatsApp Login</h2>
+                </div>
+                <div class="card-body">
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="showQR()">Show QR Code</button>
+                        <button class="btn btn-danger" onclick="clearWhatsAppAuth()">🗑️ Clear Auth & Re-login</button>
+                    </div>
+                    <div id="qr_div" style="display:none; margin-top:15px; text-align:center;">
+                        <img id="qr_img" style="max-width:280px; background:white; padding:15px; border-radius:8px;">
+                        <p class="help-text" style="margin-top:10px;">Open WhatsApp > Settings > Linked Devices > Link a Device</p>
+                    </div>
+                    <div id="whatsapp_status"></div>
+                    <div id="clear_auth_status"></div>
+                </div>
+            </div>
+            
+            <!-- Step 6: Target Group 1 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step6_num">6</div>
+                    <h2>Target Group 1 (Primary)</h2>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-secondary" onclick="loadGroups()">Load Groups</button>
+                    <div id="groups_div" class="group-list"></div>
+                </div>
+            </div>
+            
+            <!-- Step 7: Target Group 2 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="step-number" id="step7_num">7</div>
+                    <h2>Target Group 2 (Optional)</h2>
+                </div>
+                <div class="card-body">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="target2_enabled" onchange="toggleTarget2()">
+                        <label for="target2_enabled">Enable Target Group 2</label>
+                    </div>
+                    <button class="btn btn-secondary" onclick="loadGroups2()" id="load_groups2_btn" disabled>Load Groups</button>
+                    <div id="groups2_div" class="group-list"></div>
+                    <div id="target2_status" class="saved-info"><span class="saved-text"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get password from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const PASS = urlParams.get('password') || '';
+        const API_URL = '';
+        
+        // Encode password for safe use in URLs
+        const ENC_PASS = encodeURIComponent(PASS);
+        
+        // Debug
+        console.log('PASS:', PASS);
+        console.log('ENC_PASS:', ENC_PASS);
+
+        function showStatus(id, msg, isError) {
+            const el = document.getElementById(id);
+            el.className = 'status ' + (isError ? 'status-error' : 'status-success');
+            el.textContent = msg;
+        }
+
+        // Load saved config on page load
+        async function loadSavedConfig() {
+            try {
+                console.log('Loading saved config...');
+                const res = await fetch(API_URL + '/api/config?password=*** + ENC_PASS);
+                const data = await res.json();
+                console.log('Config data:', data);
+                
+                if (data.success) {
+                    if (data.apiId) {
+                        document.getElementById('api_id').value = data.apiId;
+                        document.getElementById('api_saved').classList.add('visible');
+                        document.getElementById('api_saved').querySelector('.saved-text').textContent = 'Saved: ' + data.apiId;
+                        document.getElementById('step1_num').classList.add('done');
+                    }
+                    if (data.apiHash) {
+                        document.getElementById('api_hash').value = data.apiHash;
+                        document.getElementById('api_saved').querySelector('.saved-text').textContent += ' / ' + data.apiHash.substring(0, 10) + '...';
+                    }
+                    if (data.channel) {
+                        document.getElementById('channel').value = data.channel;
+                        document.getElementById('channel_saved').classList.add('visible');
+                        document.getElementById('channel_saved').querySelector('.saved-text').textContent = 'Saved: ' + data.channel;
+                        document.getElementById('step2_num').classList.add('done');
+                    }
+                    if (data.keywords && data.keywords.length > 0) {
+                        document.getElementById('keywords').value = data.keywords.join('\n');
+                        document.getElementById('keywords_saved').classList.add('visible');
+                        document.getElementById('keywords_saved').querySelector('.saved-text').textContent = 'Saved: ' + data.keywords.length + ' keywords';
+                        document.getElementById('step3_num').classList.add('done');
+                    }
+                    if (data.sensitiveWords && data.sensitiveWords.length > 0) {
+                        document.getElementById('sensitive_words').value = data.sensitiveWords.join('\n');
+                        document.getElementById('sensitive_saved').classList.add('visible');
+                        document.getElementById('sensitive_saved').querySelector('.saved-text').textContent = 'Saved: ' + data.sensitiveWords.length + ' words';
+                        document.getElementById('step3b_num').classList.add('done');
+                    }
+                }
+            } catch (err) {
+                console.log('Could not load saved config:', err);
+            }
+        }
+
+        async function saveApi() {
+            const id = document.getElementById('api_id').value;
+            const hash = document.getElementById('api_hash').value;
+            if (!id || !hash) {
+                showStatus('api_status', 'Please fill both fields', true);
+                return;
+            }
+            try {
+                const res = await fetch(API_URL + '/api/config?password=*** + ENC_PASS + '&api_id=' + encodeURIComponent(id) + '&api_hash=' + encodeURIComponent(hash));
+                const data = await res.json();
+                if (data.success) {
+                    showStatus('api_status', 'Saved successfully!', false);
+                    document.getElementById('api_saved').classList.add('visible');
+                    document.getElementById('api_saved').querySelector('.saved-text').textContent = 'Saved: ' + id + ' / ' + hash.substring(0, 10) + '...';
+                    document.getElementById('step1_num').classList.add('done');
+                } else {
+                    showStatus('api_status', 'Error: ' + data.error, true);
+                }
+            } catch (err) {
+                showStatus('api_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function saveChannel() {
+            const ch = document.getElementById('channel').value;
+            if (!ch) {
+                showStatus('channel_status', 'Please enter channel', true);
+                return;
+            }
+            try {
+                const res = await fetch(API_URL + '/api/config?password=*** + ENC_PASS + '&channel=' + encodeURIComponent(ch));
+                const data = await res.json();
+                if (data.success) {
+                    showStatus('channel_status', 'Saved successfully!', false);
+                    document.getElementById('channel_saved').classList.add('visible');
+                    document.getElementById('channel_saved').querySelector('.saved-text').textContent = 'Saved: ' + ch;
+                    document.getElementById('step2_num').classList.add('done');
+                } else {
+                    showStatus('channel_status', 'Error: ' + data.error, true);
+                }
+            } catch (err) {
+                showStatus('channel_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function saveKeywords() {
+            const kw = document.getElementById('keywords').value.split('\n').filter(k => k.trim());
+            if (kw.length === 0) {
+                showStatus('keywords_status', 'Please enter at least one keyword', true);
+                return;
+            }
+            try {
+                const res = await fetch(API_URL + '/api/config?password=*** + ENC_PASS + '&keywords=' + encodeURIComponent(JSON.stringify(kw)));
+                const data = await res.json();
+                if (data.success) {
+                    showStatus('keywords_status', 'Saved ' + kw.length + ' keywords!', false);
+                    document.getElementById('keywords_saved').classList.add('visible');
+                    document.getElementById('keywords_saved').querySelector('.saved-text').textContent = 'Saved: ' + kw.length + ' keywords';
+                    document.getElementById('step3_num').classList.add('done');
+                } else {
+                    showStatus('keywords_status', 'Error: ' + data.error, true);
+                }
+            } catch (err) {
+                showStatus('keywords_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function saveSensitiveWords() {
+            const sw = document.getElementById('sensitive_words').value.split('\n').filter(w => w.trim());
+            try {
+                const res = await fetch(API_URL + '/api/config?password=*** + ENC_PASS + '&sensitive_words=' + encodeURIComponent(JSON.stringify(sw)));
+                const data = await res.json();
+                if (data.success) {
+                    showStatus('sensitive_status', 'Saved ' + sw.length + ' sensitive words!', false);
+                    document.getElementById('sensitive_saved').classList.add('visible');
+                    document.getElementById('sensitive_saved').querySelector('.saved-text').textContent = 'Saved: ' + sw.length + ' words';
+                    document.getElementById('step3b_num').classList.add('done');
+                } else {
+                    showStatus('sensitive_status', 'Error: ' + data.error, true);
+                }
+            } catch (err) {
+                showStatus('sensitive_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function sendCode() {
+            const phone = document.getElementById('phone').value;
+            if (!phone) {
+                showStatus('telegram_status', 'Please enter phone number', true);
+                return;
+            }
+            try {
+                const res = await fetch(API_URL + '/api/telegram/login?password=*** + ENC_PASS + '&phone=' + encodeURIComponent(phone));
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('code_div').style.display = 'block';
+                }
+                showStatus('telegram_status', data.message, !data.success);
+            } catch (err) {
+                showStatus('telegram_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function verifyCode() {
+            const code = document.getElementById('code').value;
+            if (!code) {
+                showStatus('telegram_status', 'Please enter code', true);
+                return;
+            }
+            try {
+                const res = await fetch(API_URL + '/api/telegram/login?password=*** + ENC_PASS + '&code=*** + encodeURIComponent(code));
+                const data = await res.json();
+                if (data.success) {
+                    if (data.needPassword) {
+                        document.getElementById('pass_div').style.display = 'block';
+                    } else {
+                        document.getElementById('code_div').style.display = 'none';
+                        document.getElementById('telegram_saved').classList.add('visible');
+                        document.getElementById('telegram_saved').querySelector('.saved-text').textContent = 'Logged in';
+                        document.getElementById('step4_num').classList.add('done');
+                    }
+                }
+                showStatus('telegram_status', data.message, !data.success);
+            } catch (err) {
+                showStatus('telegram_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function verifyPassword() {
+            const pass = document.getElementById('password').value;
+            if (!pass) {
+                showStatus('telegram_status', 'Please enter password', true);
+                return;
+            }
+            try {
+                const res = await fetch(API_URL + '/api/telegram/login?password=*** + ENC_PASS + '&tg_password=' + encodeURIComponent(pass));
+                const data = await res.json();
+                if (data.success) {
+                    document.getElementById('pass_div').style.display = 'none';
+                    document.getElementById('telegram_saved').classList.add('visible');
+                    document.getElementById('telegram_saved').querySelector('.saved-text').textContent = 'Logged in';
+                    document.getElementById('step4_num').classList.add('done');
+                }
+                showStatus('telegram_status', data.message, !data.success);
+            } catch (err) {
+                showStatus('telegram_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function clearWhatsAppAuth() {
+            if (!confirm('Are you sure? This will delete all saved WhatsApp login data and you will need to scan QR code again.')) {
+                return;
+            }
+            try {
+                const res = await fetch(API_URL + '/api/whatsapp/clear-auth?password=' + ENC_PASS);
+                const data = await res.json();
+                if (data.success) {
+                    showStatus('clear_auth_status', '✅ WhatsApp auth cleared! Click "Show QR Code" to login again.', false);
+                    document.getElementById('step5_num').classList.remove('done');
+                    document.getElementById('qr_div').style.display = 'none';
+                    if (qrRefreshInterval) {
+                        clearInterval(qrRefreshInterval);
+                        qrRefreshInterval = null;
+                    }
+                } else {
+                    showStatus('clear_auth_status', 'Error: ' + data.error, true);
+                }
+            } catch (err) {
+                showStatus('clear_auth_status', 'Error: ' + err, true);
+            }
+        }
+
+        let qrRefreshInterval = null;
+        
+        async function showQR() {
+            document.getElementById('qr_div').style.display = 'block';
+            
+            if (qrRefreshInterval) {
+                clearInterval(qrRefreshInterval);
+            }
+            
+            await loadQR();
+            
+            qrRefreshInterval = setInterval(async () => {
+                const qrDiv = document.getElementById('qr_div');
+                if (qrDiv.style.display !== 'none') {
+                    await loadQR();
+                }
+            }, 25000);
+        }
+        
+        async function loadQR() {
+            try {
+                const res = await fetch(API_URL + '/api/whatsapp/qr?password=*** + ENC_PASS);
+                const data = await res.json();
+                if (data.qr) {
+                    document.getElementById('qr_img').src = data.qr;
+                    showStatus('whatsapp_status', 'Scan QR code with WhatsApp (auto-refreshes)', false);
+                } else if (data.connected) {
+                    showStatus('whatsapp_status', 'WhatsApp already connected!', false);
+                    if (qrRefreshInterval) {
+                        clearInterval(qrRefreshInterval);
+                        qrRefreshInterval = null;
+                    }
+                } else {
+                    showStatus('whatsapp_status', 'Generating QR...', false);
+                }
+            } catch (err) {
+                showStatus('whatsapp_status', 'Error: ' + err, true);
+            }
+        }
+
+        async function loadGroups() {
+            try {
+                const res = await fetch(API_URL + '/api/refresh?password=*** + ENC_PASS);
+                const data = await res.json();
+                if (!data.success) {
+                    showStatus('groups_div', 'Error: ' + data.message, true);
+                    return;
+                }
+                const res2 = await fetch(API_URL + '/api/groups?password=*** + ENC_PASS);
+                const data2 = await res2.json();
+                if (!data2.connected) {
+                    showStatus('groups_div', 'WhatsApp not connected', true);
+                    return;
+                }
+                let html = '';
+                data2.groups.forEach(g => {
+                    html += '<div class="group-item" onclick="selectGroup(\'' + g.id + '\')">';
+                    html += '<div class="group-name">' + g.name + '</div>';
+                    html += '<div class="group-id">' + g.id + '</div>';
+                    html += '</div>';
+                });
+                document.getElementById('groups_div').innerHTML = html;
+            } catch (err) {
+                showStatus('groups_div', 'Error: ' + err, true);
+            }
+        }
+        
+        async function selectGroup(id) {
+            try {
+                const res = await fetch(API_URL + '/api/set?password=*** + ENC_PASS + '&target=' + encodeURIComponent(id));
+                const data = await res.json();
+                
+                if (data.success) {
+                    const groupDivs = document.getElementById('groups_div').querySelectorAll('.group-item');
+                    groupDivs.forEach(div => div.classList.remove('selected'));
+                    
+                    const clickedGroup = Array.from(groupDivs).find(div => div.getAttribute('onclick').includes(id));
+                    if (clickedGroup) {
+                        clickedGroup.classList.add('selected');
+                    }
+                    
+                    showStatus('groups_div', 'Target group selected! Messages will be forwarded here.', false);
+                    document.getElementById('step6_num').classList.add('done');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Error: ' + err);
+            }
+        }
+
+        let target2Enabled = false;
+        let selectedGroupId2 = null;
+        
+        async function toggleTarget2() {
+            target2Enabled = document.getElementById('target2_enabled').checked;
+            document.getElementById('load_groups2_btn').disabled = !target2Enabled;
+            
+            try {
+                await fetch(API_URL + '/api/set?password=*** + ENC_PASS + '&target2_enabled=' + target2Enabled);
+                if (target2Enabled) {
+                    document.getElementById('target2_status').classList.add('visible');
+                    document.getElementById('target2_status').querySelector('.saved-text').textContent = 'Target 2 enabled';
+                } else {
+                    document.getElementById('target2_status').classList.remove('visible');
+                    document.getElementById('groups2_div').innerHTML = '';
+                }
+            } catch (err) {
+                console.error('Error saving target2 state:', err);
+            }
+        }
+        
+        async function loadGroups2() {
+            if (!target2Enabled) return;
+            
+            try {
+                const res = await fetch(API_URL + '/api/refresh?password=*** + ENC_PASS);
+                const data = await res.json();
+                if (!data.success) {
+                    showStatus('groups2_div', 'Error: ' + data.message, true);
+                    return;
+                }
+                const res2 = await fetch(API_URL + '/api/groups?password=*** + ENC_PASS);
+                const data2 = await res2.json();
+                if (!data2.connected) {
+                    showStatus('groups2_div', 'WhatsApp not connected', true);
+                    return;
+                }
+                let html = '';
+                data2.groups.forEach(g => {
+                    html += '<div class="group-item" onclick="selectGroup2(\'' + g.id + '\')">';
+                    html += '<div class="group-name">' + g.name + '</div>';
+                    html += '<div class="group-id">' + g.id + '</div>';
+                    html += '</div>';
+                });
+                document.getElementById('groups2_div').innerHTML = html;
+            } catch (err) {
+                showStatus('groups2_div', 'Error: ' + err, true);
+            }
+        }
+        
+        async function selectGroup2(id) {
+            if (!target2Enabled) {
+                alert('Please enable Target Group 2 first');
+                return;
+            }
+            
+            try {
+                const res = await fetch(API_URL + '/api/set?password=*** + ENC_PASS + '&target2=' + encodeURIComponent(id));
+                const data = await res.json();
+                
+                if (data.success) {
+                    selectedGroupId2 = id;
+                    const groupDivs = document.getElementById('groups2_div').querySelectorAll('.group-item');
+                    groupDivs.forEach(div => div.classList.remove('selected'));
+                    
+                    const clickedGroup = Array.from(groupDivs).find(div => div.getAttribute('onclick').includes(id));
+                    if (clickedGroup) {
+                        clickedGroup.classList.add('selected');
+                    }
+                    
+                    showStatus('groups2_div', 'Target 2 selected! Messages will also be forwarded here.', false);
+                    document.getElementById('step7_num').classList.add('done');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Error: ' + err);
+            }
+        }
+
+        // Check Telegram login status
+        async function checkTelegramStatus() {
+            try {
+                const res = await fetch(API_URL + '/api/telegram/login?password=*** + ENC_PASS);
+                const data = await res.json();
+                
+                if (data.connected) {
+                    document.getElementById('telegram_status').className = 'status status-success';
+                    document.getElementById('telegram_status').textContent = 'Telegram connected!';
+                    document.getElementById('telegram_saved').classList.add('visible');
+                    document.getElementById('telegram_saved').querySelector('.saved-text').textContent = 'Logged in';
+                    document.getElementById('code_div').style.display = 'none';
+                    document.getElementById('pass_div').style.display = 'none';
+                    document.getElementById('step4_num').classList.add('done');
+                }
+            } catch (err) {
+                console.log('Could not check Telegram status:', err);
+            }
+        }
+
+        // Check WhatsApp connection status
+        async function checkWhatsAppStatus() {
+            try {
+                const res = await fetch(API_URL + '/api/groups?password=*** + ENC_PASS);
+                const data = await res.json();
+
+                if (data.connected) {
+                    showStatus('whatsapp_status', 'WhatsApp connected!', false);
+                    document.getElementById('step5_num').classList.add('done');
+                }
+                
+                if (data.currentTarget) {
+                    document.getElementById('step6_num').classList.add('done');
+                }
+                
+                if (data.currentTarget2) {
+                    selectedGroupId2 = data.currentTarget2;
+                    target2Enabled = data.target2Enabled;
+                    document.getElementById('target2_enabled').checked = target2Enabled;
+                    document.getElementById('load_groups2_btn').disabled = !target2Enabled;
+                    if (target2Enabled) {
+                        document.getElementById('target2_status').classList.add('visible');
+                        document.getElementById('target2_status').querySelector('.saved-text').textContent = 'Target 2: ' + data.currentTarget2;
+                        document.getElementById('step7_num').classList.add('done');
+                    }
+                }
+            } catch (err) {
+                console.log('Could not check WhatsApp status:', err);
+            }
+        }
+
+        // Load saved config when page opens
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded');
+            loadSavedConfig();
+            checkTelegramStatus();
+            checkWhatsAppStatus();
+        });
+        
+        // Also try immediate load
+        console.log('Script loaded');
+        setTimeout(loadSavedConfig, 1000);
+    </script>
+</body>
+</html>

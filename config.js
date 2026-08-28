@@ -1,0 +1,43 @@
+// ===== CONFIGURATION =====
+module.exports = {
+    TELEGRAM_API_ID: 26449295,
+    TELEGRAM_API_HASH: 'c5bc811832610ae1b056889e423680eb',
+    TELEGRAM_CHANNEL: '-1003827857978',
+    WHATSAPP_TARGET_ID: '120363425610613895@g.us',
+    WHATSAPP_TARGET_ID_2: '120363372800352465@g.us',
+    TARGET_2_ENABLED: false,
+    FILTER_KEYWORDS: [
+        'US session',
+        'Ready Gold',
+        'Ready Gold!',
+        'Gold Sell Zone',
+        'Gold Buy Zone',
+        'Gold sell now',
+        'Gold buy now',
+        'XAUUSD buy now',
+        'XAUUSD sell now',
+        'Xauusd Buy Zone',
+        'Xauusd Sell Zone',
+        'Buying Xauusd Now',
+        'Running',
+        'running',
+        'RUNNING',
+        'running!'
+    ],
+    SENSITIVE_WORDS: [
+        'Mike',
+        'source',
+        '@mikegoldmaster',
+        '#Mikesyndicate',
+        '#since2019',
+        '#mikegoldmaster',
+        '#BEASTTRADERS',
+        '#mike',
+        '@mike',
+        'fuck',
+        'fucking',
+        'FUCKING',
+        'fucked'
+    ],
+    ADMIN_NUMBERS: [],
+};

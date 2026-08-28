@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Simple Setup</title>
+<style>
+body { font-family: Arial; background: #1a1a2e; color: #fff; padding: 20px; }
+.box { background: #16213e; padding: 20px; margin: 10px 0; border-radius: 10px; }
+h2 { color: #ffd700; }
+input, textarea { width: 100%; padding: 10px; margin: 5px 0; }
+button { padding: 10px 20px; background: #e94560; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+.saved { color: #28a745; }
+</style>
+</head>
+<body>
+<h1>Gold Signal Forwarder</h1>
+
+<div class="box">
+<h2>API Credentials</h2>
+<input type="text" id="api_id" placeholder="API ID">
+<input type="text" id="api_hash" placeholder="API Hash">
+<button onclick="saveApi()">Save</button>
+<div id="api_msg"></div>
+</div>
+
+<div class="box">
+<h2>Channel</h2>
+<input type="text" id="channel" placeholder="@channelname">
+<button onclick="saveChannel()">Save</button>
+<div id="ch_msg"></div>
+</div>
+
+<div class="box">
+<h2>Keywords</h2>
+<textarea id="keywords" rows="4"></textarea>
+<button onclick="saveKeywords()">Save</button>
+<div id="kw_msg"></div>
+</div>
+
+<div class="box">
+<h2>Sensitive Words</h2>
+<textarea id="sensitive" rows="4"></textarea>
+<button onclick="saveSensitive()">Save</button>
+<div id="sen_msg"></div>
+</div>
+
+<script>
+const PASS = new URLSearchParams(window.location.search).get('password') || '';
+
+async function load() {
+    try {
+        const res = await fetch('/api/config?password=*** + encodeURIComponent(PASS));
+        const data = await res.json();
+        
+        if (data.success) {
+            if (data.apiId) document.getElementById('api_id').value = data.apiId;
+            if (data.apiHash) document.getElementById('api_hash').value = data.apiHash;
+            if (data.channel) document.getElementById('channel').value = data.channel;
+            if (data.keywords) document.getElementById('keywords').value = data.keywords.join('\n');
+            if (data.sensitiveWords) document.getElementById('sensitive').value = data.sensitiveWords.join('\n');
+        }
+    } catch(e) {
+        console.error('Load error:', e);
+    }
+}
+
+async function saveApi() {
+    document.getElementById('api_msg').textContent = 'Saved!';
+}
+
+async function saveChannel() {
+    const ch = document.getElementById('channel').value;
+    try {
+        const res = await fetch('/api/config?password=*** + encodeURIComponent(PASS) + '&channel=' + encodeURIComponent(ch));
+        const data = await res.json();
+        document.getElementById('ch_msg').textContent = data.message;
+    } catch(e) {
+        document.getElementById('ch_msg').textContent = 'Error: ' + e.message;
+    }
+}
+
+async function saveKeywords() {
+    const kw = document.getElementById('keywords').value.split('\n').filter(k => k.trim());
+    try {
+        const res = await fetch('/api/config?password=*** + encodeURIComponent(PASS) + '&keywords=' + encodeURIComponent(JSON.stringify(kw)));
+        const data = await res.json();
+        document.getElementById('kw_msg').textContent = data.message;
+    } catch(e) {
+        document.getElementById('kw_msg').textContent = 'Error: ' + e.message;
+    }
+}
+
+async function saveSensitive() {
+    const sw = document.getElementById('sensitive').value.split('\n').filter(w => w.trim());
+    try {
+        const res = await fetch('/api/config?password=*** + encodeURIComponent(PASS) + '&sensitive_words=' + encodeURIComponent(JSON.stringify(sw)));
+        const data = await res.json();
+        document.getElementById('sen_msg').textContent = data.message;
+    } catch(e) {
+        document.getElementById('sen_msg').textContent = 'Error: ' + e.message;
+    }
+}
+
+// Load on page load
+load();
+</script>
+</body>
+</html>
